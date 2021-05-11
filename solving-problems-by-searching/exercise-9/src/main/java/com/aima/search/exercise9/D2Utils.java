@@ -66,7 +66,7 @@ public class D2Utils {
     public static boolean lineIntersectPolygon(Line line, ConvexPolygon convexPolygon, boolean includeSpecialCase) {
         var vertices = convexPolygon.getVertices();
         List<Line> polygonLines = new ArrayList<Line>();
-        for (var i = 0; i < vertices.size() - 2; i++) {
+        for (var i = 0; i < vertices.size() - 1; i++) {
             polygonLines.add(new Line(vertices.get(i), vertices.get(i+1)));
         }
         polygonLines.add(new Line(vertices.get(vertices.size() -1), vertices.get(0)));
@@ -75,6 +75,9 @@ public class D2Utils {
                 return true;
             }
         }
-        return false;
+        var toIndex = vertices.indexOf(line.getTo());
+        var fromIndex = vertices.indexOf(line.getFrom());
+        // check if the line is not a edge but connects 2 vertices.
+        return toIndex != -1 && fromIndex != -1 && Math.abs(toIndex - fromIndex) > 1;
     }
 }

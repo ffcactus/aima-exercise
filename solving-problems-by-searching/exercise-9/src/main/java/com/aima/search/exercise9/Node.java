@@ -1,7 +1,9 @@
 package com.aima.search.exercise9;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -10,14 +12,14 @@ import java.util.Set;
  */
 public class Node {
     private final Point point;
-    private final Set<Point> children;
+    private final List<Point> children;
 
     public Node(Point point) {
         this.point = point;
-        this.children = new HashSet<>();
+        this.children = new ArrayList<>();
     }
 
-    public Node(Point point, Set<Point> children) {
+    public Node(Point point, List<Point> children) {
         this.point = point;
         this.children = children;
     }
@@ -27,11 +29,19 @@ public class Node {
         return point;
     }
 
-    public Set<Point> getChildren() {
+    public List<Point> getChildren() {
         return children;
     }
 
     public void addChild(Point child) {
         this.children.add(child);
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "point=" + point +
+                ", children=" + children +
+                '}';
     }
 }
