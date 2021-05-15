@@ -11,14 +11,14 @@ import java.util.List;
  */
 public class Node {
     private final Point point;
-    private final List<Point> children;
+    private final List<Node> children;
 
     public Node(Point point) {
         this.point = point;
         this.children = new ArrayList<>();
     }
 
-    public Node(Point point, List<Point> children) {
+    public Node(Point point, List<Node> children) {
         this.point = point;
         this.children = children;
     }
@@ -28,19 +28,16 @@ public class Node {
         return point;
     }
 
-    public List<Point> getChildren() {
+    public List<Node> getChildren() {
         return children;
     }
 
-    public void addChild(Point child) {
+    public void addChild(Node child) {
         this.children.add(child);
     }
 
     @Override
     public String toString() {
-        return "Node{" +
-                "point=" + point +
-                ", children=" + children +
-                '}';
+        return point.toString();
     }
 }
