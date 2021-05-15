@@ -1,27 +1,19 @@
-package com.aima.search.exercise9;
+package com.aima.exercise.sdk.d2;
 
 import java.util.Objects;
 
-public class Line {
-    private final Point from;
-    private final Point to;
+public class Segment {
+    public final Point from;
+    public final Point to;
 
-    public Line(Point from, Point to) {
+    public Segment(Point from, Point to) {
         this.from = from;
         this.to = to;
     }
 
-    public Point getFrom() {
-        return from;
-    }
-
-    public Point getTo() {
-        return to;
-    }
-
     @Override
     public String toString() {
-        return "Line{" +
+        return "Segment{" +
                 "from=" + from +
                 ", to=" + to +
                 '}';
@@ -31,7 +23,7 @@ public class Line {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Line line = (Line) o;
+        Segment line = (Segment) o;
         return from.equals(line.from) && to.equals(line.to);
     }
 

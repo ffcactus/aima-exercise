@@ -1,14 +1,13 @@
-package com.aima.search.exercise9;
+package com.aima.exercise.search.question9;
 
+
+import com.aima.exercise.sdk.d2.Point;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
- * Node represents a {@l
- * ink Point} and other {@link Point}s it can reach.
+ * Node represents a {@link Point} and other {@link Point}s it can reach.
  */
 public class Node {
     private final Point point;

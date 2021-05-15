@@ -1,4 +1,4 @@
-package com.aima.search.exercise9;
+package com.aima.exercise.sdk.d2;
 
 import java.util.Objects;
 

@@ -4,15 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.aima.exercise</groupId>
-    <artifactId>exercise-9</artifactId>
+    <groupId>com.aima.exercise.sdk</groupId>
+    <artifactId>d2</artifactId>
     <version>1.0.0</version>
     <dependencies>
-        <dependency>
-            <groupId>com.aima.exercise.sdk</groupId>
-            <artifactId>d2</artifactId>
-            <version>1.0.0</version>
-        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -34,15 +29,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.1.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.aima.exercise.search.question9.Exercise9</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
             </plugin>
         </plugins>
     </build>

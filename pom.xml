@@ -17,6 +17,7 @@
     </properties>
 
     <modules>
+        <module>sdk</module>
         <module>solving-problems-by-searching</module>
     </modules>
 
