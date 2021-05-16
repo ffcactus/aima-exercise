@@ -1,23 +1,23 @@
 package com.aima.exercise.search.question9;
 
+import com.aima.exercise.sdk.d2.Point;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class State {
-    private final Node node;
+    // private final Node node;
+    private final List<State> nextStates = new ArrayList<>();
     private State from;
+    private final Point point;
 
-    public State(Node node) {
-        this.node = node;
+    public State(Point point) {
+        this.point = point;
     }
 
-    public Node getNode() {
-        return node;
-    }
-
-    public List<Action> getActions() {
-        return node.getChildren().stream().map(State::new).map(Action::new).collect(Collectors.toList());
+    public Point getPoint() {
+        return point;
     }
 
     public State getFrom() {
@@ -28,21 +28,29 @@ public class State {
         this.from = from;
     }
 
+    public void addNextState(State next) {
+        nextStates.add(next);
+    }
+
+    public List<State> getNextStates() {
+        return nextStates;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         State state = (State) o;
-        return Objects.equals(node, state.node);
+        return Objects.equals(point, state.point);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(node);
+        return Objects.hash(point);
     }
 
     @Override
     public String toString() {
-        return node.toString();
+        return point.toString();
     }
 }

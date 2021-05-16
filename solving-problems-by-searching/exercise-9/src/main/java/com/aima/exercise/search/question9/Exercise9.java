@@ -17,7 +17,7 @@ public class Exercise9 extends JFrame {
     private final StateSpace stateSpace;
     private final Point from;
     private final Point to;
-    private Solution solution;
+    private final Solution solution;
 
     public Exercise9(Point from, Point to, List<ConvexPolygon> convexPolygons) {
         super();
@@ -38,17 +38,19 @@ public class Exercise9 extends JFrame {
     }
 
     private State getFromState() {
-        return stateSpace.getStates().stream().filter(s -> s.getNode().getPoint().equals(from)).findFirst().orElseThrow();
+        return stateSpace.getStates().stream().filter(s -> s.getPoint().equals(from)).findFirst().orElseThrow();
     }
 
     private State getToState() {
-        return stateSpace.getStates().stream().filter(s -> s.getNode().getPoint().equals(to)).findFirst().orElseThrow();
+        return stateSpace.getStates().stream().filter(s -> s.getPoint().equals(to)).findFirst().orElseThrow();
     }
 
     private StateSpace calculateStateSpace(Point from, Point to, List<ConvexPolygon> convexPolygons) {
         var redundant = new HashMap<Segment, Boolean>();
-        List<Node> nodes = new ArrayList<>();
+        List<State> states = new ArrayList<>();
         List<Point> points = new ArrayList<>();
+
+        // Get all the state.
         if (from != null) {
             points.add(from);
         }
@@ -61,13 +63,14 @@ public class Exercise9 extends JFrame {
                 ).collect(Collectors.toSet())
         );
         for (var point : points) {
-            nodes.add(new Node(point));
+            states.add(new State(point));
         }
-        for (var fromNode : nodes) {
+        // Get state's next state.
+        for (var fromState : states) {
             // Every node is a state.
-            var fromPoint = fromNode.getPoint();
-            for (var toNode : nodes) {
-                var toPoint = toNode.getPoint();
+            var fromPoint = fromState.getPoint();
+            for (var toState : states) {
+                var toPoint = toState.getPoint();
                 if (fromPoint.equals(toPoint)) {
                     continue;
                 }
@@ -88,11 +91,11 @@ public class Exercise9 extends JFrame {
                 redundant.put(s, intersect);
                 redundant.put(new Segment(s.from, s.to), intersect);
                 if (!intersect) {
-                    fromNode.addChild(toNode);
+                    fromState.addNextState(toState);
                 }
             }
         }
-        return new StateSpace(nodes.stream().map(State::new).collect(Collectors.toList()));
+        return new StateSpace(states);
     }
 
     public boolean lineAcrossPolygon(Segment s, ConvexPolygon p) {
@@ -123,6 +126,7 @@ public class Exercise9 extends JFrame {
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         paintPolygons(g2d);
+        paintStateSpace(g2d);
         paintFromTo(g2d);
         paintSolution(g2d);
     }
@@ -136,6 +140,13 @@ public class Exercise9 extends JFrame {
             g2d.setColor(Color.orange);
             g2d.fillPolygon(xs, ys, xs.length);
             g2d.setColor(Color.black);
+        });
+    }
+
+    private void paintStateSpace(Graphics2D g2d) {
+        stateSpace.getStates().forEach(state -> {
+            var point = state.getPoint();
+            g2d.drawString(point.toString(), point.x, point.y);
         });
     }
 
@@ -155,10 +166,12 @@ public class Exercise9 extends JFrame {
         var previousColor = g2d.getColor();
         g2d.setColor(Color.red);
         var state = solution.getState();
+        var step = 1;
         while (state.getFrom() != null) {
-            var fromP = state.getNode().getPoint();
-            var toP = state.getFrom().getNode().getPoint();
+            var fromP = state.getPoint();
+            var toP = state.getFrom().getPoint();
             g2d.drawLine(fromP.x, fromP.y, toP.x, toP.y);
+            g2d.drawString("" + step++, fromP.x, fromP.y);
             state = state.getFrom();
         }
         g2d.setColor(previousColor);
@@ -181,31 +194,41 @@ public class Exercise9 extends JFrame {
             polygons.add(Exercise9.createRectangle(new Point(100 + i * (r + margin), 100), r));
         }
 
+        margin = 50;
+        r = 150;
         for (var i = 0; i < 9; i++) {
-            polygons.add(Exercise9.createRectangle(new Point(200 + i * (r + margin), 300), r));
+            polygons.add(Exercise9.createRectangle(new Point(175 + i * (r + margin), 275), r));
         }
 
+        margin = 100;
+        r= 100;
         for (var i = 0; i < 10; i++) {
             polygons.add(Exercise9.createRectangle(new Point(100 + i * (r + margin), 500), r));
         }
 
+        margin = 50;
+        r = 150;
         for (var i = 0; i < 9; i++) {
-            polygons.add(Exercise9.createRectangle(new Point(200 + i * (r + margin), 700), r));
+            polygons.add(Exercise9.createRectangle(new Point(175 + i * (r + margin), 675), r));
         }
 
+        margin = 100;
+        r= 100;
         for (var i = 0; i < 10; i++) {
             polygons.add(Exercise9.createRectangle(new Point(100 + i * (r + margin), 900), r));
         }
 
+        margin = 50;
+        r = 150;
         for (var i = 0; i < 9; i++) {
-            polygons.add(Exercise9.createRectangle(new Point(200 + i * (r + margin), 1100), r));
+            polygons.add(Exercise9.createRectangle(new Point(175 + i * (r + margin), 1100), r));
         }
 
-        polygons.add(new ConvexPolygon(List.of(new Point(650, 225), new Point(1450, 225), new Point(1450, 275), new Point(650, 275))));
-        polygons.add(new ConvexPolygon(List.of(new Point(650, 425), new Point(1450, 425), new Point(1450, 475), new Point(650, 475))));
-        polygons.add(new ConvexPolygon(List.of(new Point(650, 625), new Point(1450, 625), new Point(1450, 675), new Point(650, 675))));
-        polygons.add(new ConvexPolygon(List.of(new Point(650, 825), new Point(1450, 825), new Point(1450, 875), new Point(650, 875))));
-        polygons.add(new ConvexPolygon(List.of(new Point(650, 1025), new Point(1450, 1025), new Point(1450, 1075), new Point(650, 1075))));
+//        polygons.add(new ConvexPolygon(List.of(new Point(650, 225), new Point(1450, 225), new Point(1450, 275), new Point(650, 275))));
+//        polygons.add(new ConvexPolygon(List.of(new Point(650, 425), new Point(1450, 425), new Point(1450, 475), new Point(650, 475))));
+//        polygons.add(new ConvexPolygon(List.of(new Point(650, 625), new Point(1450, 625), new Point(1450, 675), new Point(650, 675))));
+//        polygons.add(new ConvexPolygon(List.of(new Point(650, 825), new Point(1450, 825), new Point(1450, 875), new Point(650, 875))));
+//        polygons.add(new ConvexPolygon(List.of(new Point(650, 1025), new Point(1450, 1025), new Point(1450, 1075), new Point(650, 1075))));
         return polygons;
     }
 
@@ -216,8 +239,8 @@ public class Exercise9 extends JFrame {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             Point from = new Point(1050, 50);
-            Point to = new Point(1050, 1250);
-            Exercise9 exercise = new Exercise9(from, to, createPolygons1());
+            Point to = new Point(1050, 1350);
+            Exercise9 exercise = new Exercise9(from, to, createPolygons2());
             exercise.setVisible(true);
         });
     }

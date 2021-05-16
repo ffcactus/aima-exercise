@@ -7,6 +7,12 @@
     <groupId>com.aima.exercise.sdk</groupId>
     <artifactId>d2</artifactId>
     <version>1.0.0</version>
+
+    <parent>
+        <groupId>com.aima.exercise</groupId>
+        <artifactId>sdk</artifactId>
+        <version>1.0.0</version>
+    </parent>
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
